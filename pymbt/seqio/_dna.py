@@ -69,6 +69,33 @@ def read_dna(path):
     return dna
 
 
+def read_dnas(path):
+    '''Read DNA sequence file formats with one or more record (e.g. FASTA).
+
+    :param path: Full path to input file (FASTA format ending with .fa or
+                 .fasta).
+    :type path: str
+    :returns: list of DNA sequences (pymbt.DNA)
+    :rtype: list
+
+    '''
+
+    # Validate path
+    ext = os.path.splitext(path)[1].lower()
+    if not ext == '.fa' and not ext == '.fasta':
+        raise ValueError('File must end with .fa or .fasta')
+    # Read in file records with Bio.SeqIO.parse
+    parser = SeqIO.parse(path, 'fasta')
+    sequences = []
+    for record in parser:
+        seq = pymbt.DNA(str(record.seq))
+        # Add names from record identifiers
+        seq.name = seq.id
+        sequences.append(seq)
+    # Return list of sequences
+    return sequences
+
+
 def read_sequencing(directory):
     '''Read .seq and .abi/.ab1 results files from a dir.
 
