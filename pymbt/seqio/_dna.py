@@ -90,7 +90,7 @@ def read_dnas(path):
     for record in parser:
         seq = pymbt.DNA(str(record.seq))
         # Add names from record identifiers
-        seq.name = seq.id
+        seq.name = record.id
         sequences.append(seq)
     # Return list of sequences
     return sequences
